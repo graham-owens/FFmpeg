@@ -565,7 +565,7 @@ static int rtsp_read_play(AVFormatContext *s)
         range_entry = av_dict_get(s->metadata, "range", NULL, 0);
         if (rt->state == RTSP_STATE_PAUSED) {
             cmd[0] = 0;
-        else if (range_entry) {
+        } else if (range_entry) {
             av_log(NULL, AV_LOG_DEBUG, "Sending RTSP request with custom Range header: %s\n", range_entry->value);
             snprintf(cmd, sizeof(cmd), "Range: %s\r\n", range_entry->value);
         } else {
