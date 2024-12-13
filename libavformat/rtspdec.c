@@ -529,6 +529,7 @@ static int rtsp_read_play(AVFormatContext *s)
     RTSPMessageHeader reply1, *reply = &reply1;
     int i;
     char cmd[MAX_URL_SIZE];
+    AVDictionaryEntry *range_entry = NULL;
 
     av_log(s, AV_LOG_DEBUG, "hello state=%d\n", rt->state);
     rt->nb_byes = 0;
@@ -561,9 +562,12 @@ static int rtsp_read_play(AVFormatContext *s)
                 rtpctx->rtcp_ts_offset      = 0;
             }
         }
+        range_entry = av_dict_get(s->metadata, "range", NULL, 0);
         if (rt->state == RTSP_STATE_PAUSED) {
             cmd[0] = 0;
-        } else {
+        else if (range_entry)
+            snprintf(cmd, sizeof(cmd), "Range: %s\r\n", range_entry->value);
+        else {
             snprintf(cmd, sizeof(cmd),
                      "Range: npt=%"PRId64".%03"PRId64"-\r\n",
                      rt->seek_timestamp / AV_TIME_BASE,
