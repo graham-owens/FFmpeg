@@ -566,10 +566,10 @@ static int rtsp_read_play(AVFormatContext *s)
         if (rt->state == RTSP_STATE_PAUSED) {
             cmd[0] = 0;
         else if (range_entry)
-            av_log(NULL, AV_LOG_INFO, "Sending RTSP request with custom Range header: %s\n", range_header);
+            av_log(NULL, AV_LOG_DEBUG, "Sending RTSP request with custom Range header: %s\n", range_entry);
             snprintf(cmd, sizeof(cmd), "Range: %s\r\n", range_entry->value);
         else {
-            av_log(NULL, AV_LOG_INFO, "Sending RTSP request with default Range header: %s\n", range_header);
+            av_log(NULL, AV_LOG_DEBUG, "Sending RTSP request with default Range header: %s\n", range_entry);
             snprintf(cmd, sizeof(cmd),
                      "Range: npt=%"PRId64".%03"PRId64"-\r\n",
                      rt->seek_timestamp / AV_TIME_BASE,
