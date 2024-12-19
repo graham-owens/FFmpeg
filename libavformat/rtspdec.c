@@ -550,7 +550,10 @@ static int rtsp_read_play(AVFormatContext *s)
                 rtpctx->rtcp_ts_offset      = 0;
             }
         }
-        if (rt->state == RTSP_STATE_PAUSED) {
+        if (rt->custom_range) {
+            // Use custom range if set
+            snprintf(cmd, sizeof(cmd), "Range: %s\r\n", rt->custom_range);
+        } else if (rt->state == RTSP_STATE_PAUSED) {
             cmd[0] = 0;
         } else {
             snprintf(cmd, sizeof(cmd),

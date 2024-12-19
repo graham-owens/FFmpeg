@@ -102,6 +102,7 @@ const AVOption ff_rtsp_options[] = {
 #endif
     COMMON_OPTS(),
     { "user_agent", "override User-Agent header", OFFSET(user_agent), AV_OPT_TYPE_STRING, {.str = LIBAVFORMAT_IDENT}, 0, 0, DEC },
+    { "custom_range", "Custom Range header for RTSP requests", OFFSET(custom_range), AV_OPT_TYPE_STRING, {.str = NULL}, 0, 0, DEC|ENC },
 #if FF_API_OLD_RTSP_OPTIONS
     { "user-agent", "override User-Agent header (deprecated, use user_agent)", OFFSET(user_agent), AV_OPT_TYPE_STRING, {.str = LIBAVFORMAT_IDENT}, 0, 0, DEC|AV_OPT_FLAG_DEPRECATED },
 #endif
@@ -1751,6 +1752,7 @@ int ff_rtsp_connect(AVFormatContext *s)
     }
     /* Only pass through valid flags from here */
     rt->lower_transport_mask &= (1 << RTSP_LOWER_TRANSPORT_NB) - 1;
+    rt->custom_range = NULL;
 
 redirect:
     memset(&reply1, 0, sizeof(reply1));
